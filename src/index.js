@@ -25,8 +25,11 @@ function fetchSortedProduct(products) {
       })
     }
   });
-
   return productList;
+}
+
+function filterProducts(query, products){
+  return products
 }
 
 const ProductCategory = (props) => {
@@ -78,6 +81,10 @@ class ProductTable extends React.Component {
 }
 
 class SearchBar extends React.Component {
+  constructor(props){
+    super(props)
+    this.state = {}
+  }
   render() {
     return (
       <form>
@@ -93,11 +100,19 @@ class SearchBar extends React.Component {
 }
 
 class FilterableProductTable extends React.Component {
+  constructor(props){
+    super(props)
+    this.state = {products: this.props.products}
+  }
+  searchKeyChange = (event) => {
+    const filteredProducts = filterProducts(event.target.value, this.props.products)
+    this.setState({products: filteredProducts})
+  }
   render() {
     return (
       <div>
         <SearchBar />
-        <ProductTable products={this.props.products} />
+        <ProductTable products={this.state.products} />
       </div>
     );
   }
