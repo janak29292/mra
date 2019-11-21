@@ -1,70 +1,77 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+// import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-class ProductCategoryRow extends React.Component {
-  render() {
-    const category = this.props.category;
-    return (
-      <tr>
-        <th colSpan="2">
-          {category}
-        </th>
-      </tr>
-    );
-  }
+function fetchSortedProduct(products) {
+  let productList = []
+  products.forEach(product => {
+    let productInstance = productList.find(x => x.category === product.category)
+    if (productInstance) {
+      productList[productList.indexOf(productInstance)].data.push({
+        price: product.price,
+        stocked: product.stocked,
+        name: product.name
+      })
+    } else {
+      productList.push({
+        category: product.category,
+        data: [{
+          price: product.price,
+          stocked: product.stocked,
+          name: product.name
+        }]
+      })
+    }
+  });
+
+  return productList;
 }
 
-class ProductRow extends React.Component {
-  render() {
-    const product = this.props.product;
-    const name = product.stocked ?
-      product.name :
-      <span style={{color: 'red'}}>
-        {product.name}
-      </span>;
+const ProductCategory = (props) => {
+  return (
+    props.data.map((instance) =>
+      <ProductData key={instance.category} category={instance.category} data={instance.data} />
+    )
+  )
+}
 
-    return (
+const ProductData = (props) => {
+  return (
+    <React.Fragment>
       <tr>
-        <td>{name}</td>
-        <td>{product.price}</td>
+        <th colSpan="2">
+          {props.category}
+        </th>
       </tr>
-    );
-  }
+      {
+        props.data.map((instance, index) =>
+        <tr key = {index}>
+            <td style={!instance.stocked ? { color: "red" } : {}}>{instance.name}</td>
+            <td>{instance.price}</td>
+        </tr>
+        )
+      }
+    </React.Fragment>
+
+  )
 }
 
 class ProductTable extends React.Component {
   render() {
-    const rows = [];
-    let lastCategory = null;
-    
-    this.props.products.forEach((product) => {
-      if (product.category !== lastCategory) {
-        rows.push(
-          <ProductCategoryRow
-            category={product.category}
-            key={product.category} />
-        );
-      }
-      rows.push(
-        <ProductRow
-          product={product}
-          key={product.name} />
-      );
-      lastCategory = product.category;
-    });
-
+    let productList = fetchSortedProduct(this.props.products)
     return (
       <table>
         <thead>
-          <tr>
-            <th>Name</th>
-            <th>Price</th>
-          </tr>
+        <tr>
+          <th>Name</th>
+          <th>Price</th>
+        </tr>
         </thead>
-        <tbody>{rows}</tbody>
+        <tbody>
+        <ProductCategory data={productList} />
+        </tbody>
       </table>
     );
   }
@@ -98,16 +105,16 @@ class FilterableProductTable extends React.Component {
 
 
 const PRODUCTS = [
-  {category: 'Sporting Goods', price: '$49.99', stocked: true, name: 'Football'},
-  {category: 'Sporting Goods', price: '$9.99', stocked: true, name: 'Baseball'},
-  {category: 'Sporting Goods', price: '$29.99', stocked: false, name: 'Basketball'},
-  {category: 'Electronics', price: '$99.99', stocked: true, name: 'iPod Touch'},
-  {category: 'Electronics', price: '$399.99', stocked: false, name: 'iPhone 5'},
-  {category: 'Electronics', price: '$199.99', stocked: true, name: 'Nexus 7'}
+  { category: 'Sporting Goods', price: '$49.99', stocked: true, name: 'Football' },
+  { category: 'Sporting Goods', price: '$9.99', stocked: true, name: 'Baseball' },
+  { category: 'Electronics', price: '$99.99', stocked: true, name: 'iPod Touch' },
+  { category: 'Electronics', price: '$399.99', stocked: false, name: 'iPhone 5' },
+  { category: 'Sporting Goods', price: '$29.99', stocked: false, name: 'Basketball' },
+  { category: 'Electronics', price: '$199.99', stocked: true, name: 'Nexus 7' }
 ];
- 
+
 ReactDOM.render(
   <FilterableProductTable products={PRODUCTS} />,
-  document.getElementById('container')
+  document.getElementById('root')
 );
 serviceWorker.unregister();
