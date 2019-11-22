@@ -28,7 +28,11 @@ function fetchSortedProduct(products) {
   return productList;
 }
 
-function filterProducts(query, products){
+function filterProducts(query, showStocked, products){
+  if (showStocked){
+    products = products.filter((x) => (x.stocked))
+  }
+  products = products.filter((x) => (x.name.toLowerCase().includes(query.toLowerCase())))
   return products
 }
 
@@ -83,14 +87,22 @@ class ProductTable extends React.Component {
 class SearchBar extends React.Component {
   constructor(props){
     super(props)
-    this.state = {}
   }
+
+  handleChange(event){
+    this.props.searchKeyChange(event)
+  }
+
+  handleTick(event){
+    this.props.isStockedChange(event)
+  }
+
   render() {
     return (
       <form>
-        <input type="text" placeholder="Search..." />
+        <input type="text" placeholder="Search..." value={this.props.query} onChange={(e) => this.handleChange(e)}/>
         <p>
-          <input type="checkbox" />
+          <input type="checkbox" checked={this.props.isStocked} onChange={(e) => this.handleTick(e)} />
           {' '}
           Only show products in stock
         </p>
@@ -102,16 +114,32 @@ class SearchBar extends React.Component {
 class FilterableProductTable extends React.Component {
   constructor(props){
     super(props)
-    this.state = {products: this.props.products}
+    this.state = {products: this.props.products,
+                  query: '',
+                  showStocked: false}
+  }
+  isStockedChange = (event) => {
+    const showStocked = !this.state.showStocked
+    const filteredProducts = filterProducts(this.state.query, showStocked, this.props.products)
+    this.setState({
+      showStocked, products: filteredProducts
+    })
   }
   searchKeyChange = (event) => {
-    const filteredProducts = filterProducts(event.target.value, this.props.products)
-    this.setState({products: filteredProducts})
+    const query = event.target.value
+    const filteredProducts = filterProducts(query, this.state.showStocked, this.props.products)
+    this.setState({products: filteredProducts, query})
   }
   render() {
+    const props = {
+      query: this.state.query,
+      isStockedChange: this.isStockedChange,
+      searchKeyChange: this.searchKeyChange,
+      isStocked: this.state.showStocked
+    }
     return (
       <div>
-        <SearchBar />
+        <SearchBar {...props} />
         <ProductTable products={this.state.products} />
       </div>
     );
