@@ -1,35 +1,45 @@
 const initialState ={
-    age:21,
-    history: []
+    a:1,
+    b:1
 }
 
 const reducer = (state= initialState, action) => {
     const newState = {...state};
+    // switch (action.type) {
+    //     case "AGE_UP":
+    //         return{
+    //             ...state,
+    //             age: state.age + action.value,
+    //             history: [...state.history, {age: state.age + action.value}]
+    //         }
+    //         break;
+    //     case "AGE_DOWN":
+    //             return{
+    //                 ...state,
+    //                 age: state.age - action.value,
+    //                 history: [...state.history, {age: state.age + action.value}]
+    //             }
+    //         break;
+    //     case "DEL_ITEM":
+    //         return{
+    //             ...state,
+    //             age: state.age,
+    //             history: state.history.filter((item)=>(item != state.history[action.key]))
+    //         }
+    // }
     switch (action.type) {
-        case "AGE_UP":
+        case 'UPDATE_A':
             return{
                 ...state,
-                age: state.age + action.value,
-                history: [...state.history, {age: state.age + action.value}]
+                a: state.a + state.b
             }
             break;
-        case "AGE_DOWN":
-                return{
-                    ...state,
-                    age: state.age - action.value,
-                    history: [...state.history, {age: state.age + action.value}]
-                }
-            break;
-        case "DEL_ITEM":
-            console.log('this happend');
-            console.log(action);
-            console.log(state.history);
-            console.log(state.history.filter((item)=>(item == state.history[action.key])));
+        case 'UPDATE_B':
             return{
                 ...state,
-                age: state.age,
-                history: state.history.filter((item)=>(item != state.history[action.key]))
+                b: state.a + state.b
             }
+            break;
     }
     return newState
 }

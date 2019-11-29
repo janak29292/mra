@@ -6,13 +6,14 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import TodoApp from './apps/todo'
 import FilterableProductTable from './apps/thinking'
-import { Provider } from 'react-redux'
 // import store from './redux/store'
-import { createStore } from 'redux'
 import A from './apps/learnredux'
-import reducer from './redux/store/reducer'
+import Appl from './apps/multiplereducers'
+import ReducerContainer from './redux/store/reducers'
 
-const store = createStore(reducer)
+import { createStore } from 'redux'
+import { Provider } from 'react-redux'
+const store = createStore(ReducerContainer)
 // 'REact Router'
 // ReactDOM.render(
 //   <App />,
@@ -43,7 +44,7 @@ const store = createStore(reducer)
 
 ReactDOM.render(
   <Provider store={store}>
-    <A />
+    <Appl />
   </Provider>,
   document.getElementById('root')
 )
