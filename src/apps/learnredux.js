@@ -21,10 +21,18 @@ class A extends React.Component{
     // }
     render(){
         return (
-            <div>
+            <div className='App'>
                 <div>Age: <span>{this.props.age}</span></div>
-                <button onClick={(e) => this.props.onAgeUp(e)}>Age UP</button>
-                <button onClick={(e) => this.props.onAgeDown(e)}>Age Down</button>
+                <button onClick={this.props.onAgeUp}>Age UP</button>
+                <button onClick={this.props.onAgeDown}>Age Down</button>
+                <div>History</div>
+                <ul>
+                    {
+                        this.props.history.map((event, index) => (
+                            <li key={index} onClick={(e,key=index) => this.props.onDelItem(e, key)}>Age: {event.age}</li>
+                        ))
+                    }
+                </ul>
             </div>
         )
     }
@@ -32,14 +40,16 @@ class A extends React.Component{
 
 const mapStateToProps = (state) => {
     return{
-        age: state.age
+        age: state.age,
+        history: state.history
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return{
-        onAgeUp: () => dispatch({type: 'AGE_UP'}),
-        onAgeDown: () => dispatch({type: 'AGE_DOWN'})
+        onAgeUp: () => dispatch({type: 'AGE_UP', value: 1}),
+        onAgeDown: () => dispatch({type: 'AGE_DOWN', value: 1}),
+        onDelItem: (event, key) => dispatch({type: 'DEL_ITEM', key})
     }
 }
 
