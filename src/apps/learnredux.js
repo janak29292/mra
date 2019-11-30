@@ -38,10 +38,10 @@ class A extends React.Component{
     }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (store) => {
     return{
-        age: state.age,
-        history: state.history
+        age: store.age,
+        history: store.history
     }
 }
 

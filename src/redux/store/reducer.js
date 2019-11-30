@@ -1,44 +1,30 @@
 const initialState ={
-    a:1,
-    b:1
+    age:21,
+    history: []
 }
 
 const reducer = (state= initialState, action) => {
     const newState = {...state};
-    // switch (action.type) {
-    //     case "AGE_UP":
-    //         return{
-    //             ...state,
-    //             age: state.age + action.value,
-    //             history: [...state.history, {age: state.age + action.value}]
-    //         }
-    //         break;
-    //     case "AGE_DOWN":
-    //             return{
-    //                 ...state,
-    //                 age: state.age - action.value,
-    //                 history: [...state.history, {age: state.age + action.value}]
-    //             }
-    //         break;
-    //     case "DEL_ITEM":
-    //         return{
-    //             ...state,
-    //             age: state.age,
-    //             history: state.history.filter((item)=>(item != state.history[action.key]))
-    //         }
-    // }
     switch (action.type) {
-        case 'UPDATE_A':
+        case "AGE_UP":
             return{
                 ...state,
-                a: state.a + state.b
+                age: state.age + action.value,
+                history: [...state.history, {age: state.age + action.value}]
             }
-            break;
-        case 'UPDATE_B':
+        case "AGE_DOWN":
+                return{
+                    ...state,
+                    age: state.age - action.value,
+                    history: [...state.history, {age: state.age + action.value}]
+                }
+        case "DEL_ITEM":
             return{
                 ...state,
-                b: state.a + state.b
+                age: state.age,
+                history: state.history.filter((item)=>(item !== state.history[action.key]))
             }
+        default:
             break;
     }
     return newState

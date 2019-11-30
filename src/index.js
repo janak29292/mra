@@ -2,18 +2,30 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import './App.css';
-import App from './App';
+// import App from './App';
 import * as serviceWorker from './serviceWorker';
-import TodoApp from './apps/todo'
-import FilterableProductTable from './apps/thinking'
+// import TodoApp from './apps/todo'
+// import FilterableProductTable from './apps/thinking'
 // import store from './redux/store'
 import A from './apps/learnredux'
-import Appl from './apps/multiplereducers'
-import ReducerContainer from './redux/store/reducers'
+// import Appl from './apps/multiplereducers'
+// import ReducerContainer from './redux/store/reducers'
+import reducer from './redux/store/reducer'
 
-import { createStore } from 'redux'
+import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
-const store = createStore(ReducerContainer)
+
+const logAction = store => {
+  return next => {
+    return action => {
+      const result = next(action)
+      console.log(result);      
+    }
+  }
+}
+
+const store = createStore(reducer, applyMiddleware(logAction))
+// const store = createStore(reducer)
 // 'REact Router'
 // ReactDOM.render(
 //   <App />,
@@ -44,7 +56,7 @@ const store = createStore(ReducerContainer)
 
 ReactDOM.render(
   <Provider store={store}>
-    <Appl />
+    <A />
   </Provider>,
   document.getElementById('root')
 )

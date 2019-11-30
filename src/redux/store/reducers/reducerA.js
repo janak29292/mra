@@ -10,7 +10,6 @@ const reducerA = (state= initialState, action) => {
                 ...state,
                 a: state.a + action.b
             }
-            break;
     }
     return newState
 }
