@@ -6,25 +6,18 @@ import './App.css';
 import * as serviceWorker from './serviceWorker';
 // import TodoApp from './apps/todo'
 // import FilterableProductTable from './apps/thinking'
-// import store from './redux/store'
+// import store from './redux'
 import A from './apps/learnredux'
 // import Appl from './apps/multiplereducers'
-// import ReducerContainer from './redux/store/reducers'
-import reducer from './redux/store/reducer'
+import ReducerContainer from './redux/reducers'
+// import reducer from './redux/reducers/reducer'
 
 import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
+import thunk from 'redux-thunk'
 
-const logAction = store => {
-  return next => {
-    return action => {
-      const result = next(action)
-      console.log(result);      
-    }
-  }
-}
-
-const store = createStore(reducer, applyMiddleware(logAction))
+const store = createStore(ReducerContainer, applyMiddleware(thunk))
+// const store = createStore(ReducerContainer)
 // const store = createStore(reducer)
 // 'REact Router'
 // ReactDOM.render(

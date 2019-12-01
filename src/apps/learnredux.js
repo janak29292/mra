@@ -1,5 +1,7 @@
 import React from "react";
 import { connect } from 'react-redux';
+import * as actionCreator from '../redux/actions/actions'
+import logo from '../logo.svg'
 
 
 
@@ -20,19 +22,25 @@ class A extends React.Component{
     //     }
     // }
     render(){
+        let element = <div>hello</div>
+        if (this.props.loading){
+            element = <img src={logo} className="App-logo"/>
+        } else {
+            element = <ul>
+            {
+                this.props.history.map((event, index) => (
+                    <li key={index} onClick={(e,key=index) => this.props.onDelItem(e, key)}>Age: {event.age}</li>
+                ))
+            }
+        </ul>
+        }
         return (
             <div className='App'>
                 <div>Age: <span>{this.props.age}</span></div>
                 <button onClick={this.props.onAgeUp}>Age UP</button>
                 <button onClick={this.props.onAgeDown}>Age Down</button>
                 <div>History</div>
-                <ul>
-                    {
-                        this.props.history.map((event, index) => (
-                            <li key={index} onClick={(e,key=index) => this.props.onDelItem(e, key)}>Age: {event.age}</li>
-                        ))
-                    }
-                </ul>
+                {element}
             </div>
         )
     }
@@ -40,16 +48,17 @@ class A extends React.Component{
 
 const mapStateToProps = (store) => {
     return{
-        age: store.age,
-        history: store.history
+        age: store.reducer.age,
+        history: store.reducer.history,
+        loading: store.reducer.loading
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return{
-        onAgeUp: () => dispatch({type: 'AGE_UP', value: 1}),
-        onAgeDown: () => dispatch({type: 'AGE_DOWN', value: 1}),
-        onDelItem: (event, key) => dispatch({type: 'DEL_ITEM', key})
+        onAgeUp: () => dispatch(actionCreator.ageUp(1)),
+        onAgeDown: () => dispatch(actionCreator.ageDown(1)),
+        onDelItem: (event, key) => dispatch(actionCreator.delItem(key))
     }
 }
 
