@@ -1,4 +1,4 @@
-export const ageUpAsync = value => {
+export const ageUp = value => {
     return {type: 'AGE_UP', value}
 }
 
@@ -9,15 +9,15 @@ export const loading = () => {
 }
 
 
-// can do this cause of thunk
-export const ageUp = val => {
-    return dispatch => {
-        dispatch(loading())
-        setTimeout(() => {
-            dispatch(ageUpAsync(val))
-        }, 1000)
-    }
-}
+// // can do this cause of thunk
+// export const ageUp = val => {
+//     return dispatch => {
+//         dispatch(loading())
+//         setTimeout(() => {
+//             dispatch(ageUpAsync(val))
+//         }, 1000)
+//     }
+// }
 
 
 export const ageDown = value => {
