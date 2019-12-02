@@ -15,8 +15,13 @@ import ReducerContainer from './redux/reducers'
 import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
+import createSagaMiddleware from 'redux-saga'
 
-const store = createStore(ReducerContainer, applyMiddleware(thunk))
+const sagaMiddleware = createSagaMiddleware();
+
+// sagaMiddleware.run()
+
+const store = createStore(ReducerContainer, applyMiddleware(sagaMiddleware))
 // const store = createStore(ReducerContainer)
 // const store = createStore(reducer)
 // 'REact Router'
